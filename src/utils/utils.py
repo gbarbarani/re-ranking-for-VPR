@@ -3,7 +3,6 @@ import logging
 import numpy as np
 from tqdm import tqdm
 import multiprocessing
-torch.backends.cudnn.benchmark= True  # Provides a speedup
 
 import faiss
 from torch.utils.data.dataset import Subset
@@ -19,17 +18,18 @@ def extract_database_descriptors(extractor, dataset, batch_size=8, num_workers=4
                                      num_workers=num_workers,
                                      batch_size=batch_size, 
                                      pin_memory=(device=="cuda"),
-                                     collate_fn=extractor.collate_fn)
+                                     collate_fn=extractor.collate_fn,
+                                     shuffle=False)
 
         database_descriptors = np.empty((len(database_subset_ds), extractor.output_dim), dtype="float32")
+
         for images, indices in tqdm(database_dataloader, ncols=100):
+            indices = (indices % dataset.database_num)
             data = {"image": images.to(device)}
-            
             out = extractor(data)
             descriptors = out["global_descriptors"]
 
             descriptors = descriptors.cpu().numpy()
-        
             database_descriptors[indices.numpy(), :] = descriptors
 
         return database_descriptors
@@ -44,7 +44,8 @@ def extract_queries_descriptors(extractor, dataset, num_workers=4, device="cuda"
                                     num_workers=num_workers,
                                     batch_size=queries_batch_size, 
                                     pin_memory=(device=="cuda"),
-                                    collate_fn=extractor.collate_fn)
+                                    collate_fn=extractor.collate_fn,
+                                    shuffle=False)
     
         queries_descriptors = np.empty((len(queries_subset_ds), extractor.output_dim), dtype="float32")
         for images, indices in tqdm(queries_dataloader, ncols=100):
