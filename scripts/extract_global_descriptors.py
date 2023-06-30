@@ -46,7 +46,7 @@ parser.add_argument("--n_chunks", type=int, default=4)
 
 parser.add_argument("--chunks", type=str, default=None)
 
-parser.add_argument("--perform_evaluetion", type=int, default=1)
+parser.add_argument("--perform_evaluation", type=int, default=1)
 
 parser.add_argument("--recall_values", type=str, default="[1, 5, 10, 100]",
                         help="list of integer to be evaluate with eval.")
@@ -56,7 +56,7 @@ parser.add_argument("--num_candidates", type=int, default=100,
 
 args = parser.parse_args()
 args.recall_values = eval(args.recall_values)
-args.perform_evaluetion = (args.perform_evaluetion != 0)
+args.perform_evaluation = (args.perform_evaluation != 0)
 if args.chunks is None:
     args.chunks = [i for i in range(args.n_chunks)]
 else:
@@ -110,7 +110,7 @@ for i in range(args.n_chunks):
     write_to_hdf5(output_file, output)
 
 
-if args.perform_evaluetion:
+if args.perform_evaluation:
     queries_descriptors = extract_queries_descriptors(extractor, 
                                                       dataset, 
                                                       args.num_workers, 
