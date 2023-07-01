@@ -72,7 +72,6 @@ dataset = TestDataset(args.dataset_path,
 
 base_predictions = read_baseprediction_from_hdf5(args.base_predictions_path)
 
-
 rerankend_predictions, reranked_scores = extract_reranked_prediction(extractor, 
                                                                      scorer, 
                                                                      dataset, 
@@ -80,9 +79,14 @@ rerankend_predictions, reranked_scores = extract_reranked_prediction(extractor,
                                                                      args.num_candidates, 
                                                                      args.device)
 
+predictions_filenames = [[os.path.basename(dataset.database_paths[j]) for j in rerankend_predictions[i]] for i in range(dataset.queries_num)]
+queries_filenames = [os.path.basename(dataset.queries_paths[i]) for i in range(dataset.queries_num)]
+
 
 output = {'predictions': rerankend_predictions,
-          'scores': reranked_scores}
+          'scores': reranked_scores,
+          'reranked_candidates_filenames': predictions_filenames,
+          'queries_filenames': queries_filenames}
 
 write_to_hdf5(output_file, output)
 

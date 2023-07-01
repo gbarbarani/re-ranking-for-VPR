@@ -7,10 +7,10 @@ class LoFTR(BaseModel):
     default_conf = {}
     required_inputs = ["image0", "image1"]
 
-    def _init(self, **conf):
+    def _init(self, conf):
         self.matcher = _LoFTR(pretrained='outdoor')
 
-    def _forward(self, data):
+    def forward(self, data):
         out = self.matcher({"image0": data["image0"],
                             "image1": data["image1"]})
 

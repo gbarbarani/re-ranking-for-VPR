@@ -57,11 +57,13 @@ class TestDataset(data.Dataset):
         
         #### Read paths and UTM coordinates for all images.
         if db_paths_func is None:
-            self.database_paths = sorted(glob(os.path.join(self.database_folder, "**", "*.jpg"), recursive=True))
+            self.database_paths = sorted(glob(os.path.join(self.database_folder, "**", "*.jpg"), recursive=True),
+                                         key=lambda p: os.path.basename(p))
         else:
             self.database_paths = db_paths_func()
 
-        self.queries_paths  = sorted(glob(os.path.join(self.queries_folder, "**", "*.jpg"),  recursive=True))
+        self.queries_paths  = sorted(glob(os.path.join(self.queries_folder, "**", "*.jpg"),  recursive=True),
+                                     key=lambda p: os.path.basename(p))
         
 
         if compute_positives:

@@ -1,8 +1,11 @@
-import sys
 from pathlib import Path
 import torch
 from torchvision import transforms
 from .base_model import BaseModel
+
+import sys 
+d2net_path = Path(__file__).parent / '../../third_party/CVNet'
+sys.path.append(str(d2net_path))
 
 from CVNet.model.CVNet_Rerank_model import CVNet_Rerank
 
@@ -111,7 +114,7 @@ class CVNet(BaseModel):
     default_conf = {
         "MODEL_DEPTH": 50,
         "MODEL_HEADS_REDUCTION_DIM": 2048,
-        "TEST_WEIGHTS": "models/cvnet/CVPR2022_CVNet_R50.pyth",
+        "TEST_WEIGHTS": "third_party/CVNet/CVPR2022_CVNet_R50.pyth",
         "TEST_SCALE_LIST": [0.7071, 1.0, 1.4142],
         "mode": "reranking",
     }

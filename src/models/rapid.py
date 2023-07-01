@@ -12,7 +12,7 @@ class MultiScaleRAPID(BaseModel):
                        "descriptors0", "descriptors1",
                        "levels0", "levels1"]
 
-    def _init(self, **conf):
+    def _init(self, conf):
         self.sorers = []
 
         if isinstance(self.conf["rapid_configs"], dict):
@@ -24,7 +24,7 @@ class MultiScaleRAPID(BaseModel):
 
 
 
-    def _forward(self, data):
+    def forward(self, data):
          w_scores = []
 
          for i in range(self.conf["num_levels"]):
@@ -56,10 +56,10 @@ class RAPID(BaseModel):
                        "keypoints0", "keypoints1",
                        "descriptors0", "descriptors1"]
 
-    def _init(self, **conf):
+    def _init(self, conf):
         return
 
-    def _forward(self, data):
+    def forward(self, data):
         qfeat = data["descriptors0"][0]
         dbfeat = data["descriptors1"][0]
 

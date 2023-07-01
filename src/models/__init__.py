@@ -6,3 +6,5 @@ from .superglue import SuperGlue
 from .ransac import RANSAC, MultiScaleRANSAC
 from .transvpr import TransVPR
 from .patchnetvlad import PatchNetVLAD
+from .cvnet import CVNet
+from .loftr import LoFTR
