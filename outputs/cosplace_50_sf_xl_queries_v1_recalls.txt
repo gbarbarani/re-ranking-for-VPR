@@ -1,0 +1,1 @@
+cosplace_50_sf_xl_queries_v1: [76.7 82.5 85.6 92.5] 
