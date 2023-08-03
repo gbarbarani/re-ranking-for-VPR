@@ -64,8 +64,15 @@ class MultiScaleRANSAC(BaseModel):
 
 
 class RANSAC(BaseModel):
+    """
+    Matching is based on maximizing the similarity and assumes the input descriptors to be normalized.
+    """
+
     default_conf = {"ransacReprojThreshold": 24., 
-                    "ransacIter": 2000}
+                    "ransacIter": 2000,
+                    "match_threshold": 0         
+                    }
+    
     required_inputs = ["image0", "image1",
                        "keypoints0", "keypoints1",
                        "descriptors0", "descriptors1"]
@@ -80,11 +87,13 @@ class RANSAC(BaseModel):
         keypoints_q = data["keypoints0"][0].T.cpu().numpy()
         keypoints_db = data["keypoints1"][0].T.cpu().numpy()
 
-        fw_inds, bw_inds = torch_nn(qfeat, dbfeat)
+        fw_inds, bw_inds, score = torch_nn(qfeat, dbfeat)
         fw_inds = fw_inds.cpu().numpy()
         bw_inds = bw_inds.cpu().numpy()
+        score = score.cpu().numpy()
 
-        mutuals = np.atleast_1d(np.argwhere(bw_inds[fw_inds] == np.arange(len(fw_inds))).squeeze())
+        mutuals = (bw_inds[fw_inds] == np.arange(len(fw_inds))) & (score >= self.conf["match_threshold"])
+        mutuals = np.atleast_1d(np.argwhere(mutuals).squeeze())
 
         if len(mutuals) == 0:
             s_score = 0.
@@ -124,9 +133,7 @@ class RANSAC(BaseModel):
 def torch_nn(x, y):
     mul = torch.matmul(x.T, y)
 
-    dist = 2 - 2 * mul
+    score, fw_inds = torch.max(mul, 0)
+    bw_inds = torch.argmax(mul, 1)
 
-    fw_inds = torch.argmin(dist, 0)
-    bw_inds = torch.argmin(dist, 1)
-
-    return fw_inds, bw_inds
+    return fw_inds, bw_inds, score

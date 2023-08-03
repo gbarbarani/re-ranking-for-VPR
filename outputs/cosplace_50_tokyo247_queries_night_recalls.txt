@@ -1,7 +1,1 @@
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
-cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619] 
+cosplace_50_tokyo247_queries_night: [80.         88.57142857 91.42857143 96.19047619]

@@ -15,17 +15,12 @@ class SuperPoint(BaseModel):
         'nms_radius': 4,
         'keypoint_threshold': 0.005,
         'max_keypoints': 1024,
-        'remove_borders': 4,
-        'fix_sampling': False,
+        'remove_borders': 4
     }
     required_inputs = ['image']
     detection_noise = 2.0
 
     def _init(self, conf):
-        if conf['fix_sampling']:
-            self.sample_descriptors = sample_descriptors_fix_sampling
-        else:
-            self.sample_descriptors = sample_descriptors
         self.net = _SuperPoint(conf).eval()
 
 
